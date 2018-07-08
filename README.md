@@ -40,4 +40,4 @@ today. Add a comment why you have used the feature
 - [x] **Load last commits**
 - [x] **Add a search for commit messages**
 - [x] **Add a search for commit messages**
-- [ ] **Endless scrolling**
+- [x] **Endless scrolling**

@@ -7,3 +7,9 @@ export const fetchRepos = () => ({
   payload: axios.get(baseURI)
 })
 
+export const selectRepo = (repo) => ({
+  type: "SELECT_REPO",
+  selected: repo
+})
+
+

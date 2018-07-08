@@ -1,6 +1,7 @@
 
 let initState = {
     status: "completed",
+    selected: "",
     list: []
 }
 export default (state = initState, action) => {
@@ -15,6 +16,11 @@ export default (state = initState, action) => {
                 ...state,
                 status: "completed",
                 list: action.payload.data
+            }
+        case 'SELECT_REPO':
+            return {
+                ...state,
+                selected: action.selected
             }
         default:
             return state

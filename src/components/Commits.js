@@ -1,18 +1,33 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import '../commits.css';
-import {hideCommits} from '../actions/commitActions'
+import {hideCommits, fetchCommits} from '../actions/commitActions'
 import Commit from '../containers/Commit'
 
 class Commits extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            filter: ""
+            filter: "",
+            firstCommits: [...this.props.commits],
+            displayMore: true
         }
+        this.pagination = 1;
+        this.moreCommits = this.moreCommits.bind(this)
+        this.handleChanges = this.handleChanges.bind(this)
     }
+
     handleChanges(event) {
         this.setState({filter: event.target.value})
+    }
+
+    moreCommits() {
+        if(this.state.firstCommits.length == this.props.commits.length && this.pagination >= 2) {
+            this.setState({displayMore: false})
+        } else {
+            this.pagination++;
+            this.props.fetchCommits(this.props.repos.selected, this.pagination)
+        }
     }
 
     render() {
@@ -30,7 +45,7 @@ class Commits extends React.Component {
                             className="form-control mr-sm-2"
                             type="search" placeholder="Search"
                             aria-label="Search" value={this.state.filter}
-                            onChange={this.handleChanges.bind(this)}/>
+                            onChange={this.handleChanges}/>
                     </form>
                 </nav>
                 {
@@ -45,6 +60,7 @@ class Commits extends React.Component {
                     }
                     </div>
                 }
+                <div className="read-more" onClick={this.moreCommits}>load more</div>
             </div>
             ]
         )
@@ -52,10 +68,11 @@ class Commits extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    commits: state.commits
+    commits: state.commits,
+    repos: state.repos,
 })
 
 export default connect(
     mapStateToProps,
-    {hideCommits: hideCommits}
+    {hideCommits: hideCommits, fetchCommits: fetchCommits}
 )(Commits)

@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {fetchRepos} from '../actions/repoActions'
+import {selectRepo, fetchRepos} from '../actions/repoActions'
 import {fetchCommits} from '../actions/commitActions'
 import {Share, Code } from '@material-ui/icons';
 
@@ -13,6 +13,12 @@ class Repos extends React.Component {
     constructor(props) {
         super(props);
         this.props.fetchRepos()
+        this.fetch = this.fetch.bind(this)
+    }
+
+    fetch(repo) {
+        this.props.fetchCommits(repo)
+        this.props.selectRepo(repo)
     }
     render() {
         return(
@@ -22,7 +28,7 @@ class Repos extends React.Component {
                     icon={<Share />}
                 />
                 {this.props.repos.list.map((repo) => {
-                    return <Repo repo={repo} fetch={this.props.fetchCommits}/>
+                    return <Repo repo={repo} fetch={this.fetch}/>
 
                 })}
             </VerticalTimeline>
@@ -36,5 +42,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
     mapStateToProps,
-    {fetchRepos: fetchRepos, fetchCommits: fetchCommits}
+    {fetchRepos: fetchRepos, fetchCommits: fetchCommits, selectRepo: selectRepo}
 )(Repos)

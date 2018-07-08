@@ -16,7 +16,7 @@ export default (state = initState, action) => {
                 ...state,
                 status: "completed",
                 display: true,
-                list: action.payload.data
+                list: [...state.list, ...action.payload.data]
             }
         case 'COMMIT_DISPLAY':
             return {
